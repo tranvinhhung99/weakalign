@@ -134,7 +134,10 @@ class FeatureRegression(nn.Module):
 
     def forward(self, x):
         x = self.conv(x)
-        x = x.view(x.size(0), -1)
+        batch_size = x.shape[0]
+        feat_size = torch.prod(torch.tensor(x.shape[1:]))
+
+        x = x.contiguous().view(x.size(0), feat_size)
         x = self.linear(x)
         return x
     

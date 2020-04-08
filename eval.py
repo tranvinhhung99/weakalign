@@ -89,10 +89,16 @@ if two_stage and args.model!='':
         checkpoint['state_dict'] = OrderedDict([(k.replace('vgg', 'model'), v) for k, v in checkpoint['state_dict'].items()])
 
         for name, param in model.FeatureExtraction.state_dict().items():
+            if name.endswith('num_batches_tracked'):
+                continue
             model.FeatureExtraction.state_dict()[name].copy_(checkpoint['state_dict']['FeatureExtraction.' + name])    
         for name, param in model.FeatureRegression.state_dict().items():
+            if name.endswith('num_batches_tracked'):
+                continue
             model.FeatureRegression.state_dict()[name].copy_(checkpoint['state_dict']['FeatureRegression.' + name])
         for name, param in model.FeatureRegression2.state_dict().items():
+            if name.endswith('num_batches_tracked'):
+                continue
             model.FeatureRegression2.state_dict()[name].copy_(checkpoint['state_dict']['FeatureRegression2.' + name])
             
 if two_stage and args.model=='':
